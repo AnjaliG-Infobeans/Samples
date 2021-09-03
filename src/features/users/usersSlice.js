@@ -2,27 +2,25 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   users: [
-      {
-          fname: "Mark", lname: "Otto", username: "mdo"
-      }, {
-          fname: "Jacob", lname: "Jacob", username: "fat"
-      },
+    { fname: "Mark", lname: "Otto", username: "mdo" }, 
+    { fname: "Jacob", lname: "Jacob", username: "fat" },
   ],
-  status: 'idle',
 };
 
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    increment: (state) => {
-
-      state.value += 1;
+    addUser: (state, {payload}) => {
+      state.users.push(payload);
+    },
+    deleteUser: (state, {payload}) => {
+      state.users = state.users.filter((user) =>  user.username !== payload);
     },
   },
 });
 
-export const { increment } = usersSlice.actions;
+export const { addUser, deleteUser } = usersSlice.actions;
 
 export const selectUsers = (state) => state.users.users;
 

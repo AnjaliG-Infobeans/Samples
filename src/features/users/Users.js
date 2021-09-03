@@ -1,23 +1,37 @@
-import React from 'react'
-import { Button, Col, Form, Row, Table } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-import { selectUsers } from './usersSlice'
+import React, { useState } from 'react'
+import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { addUser, deleteUser, selectUsers } from './usersSlice'
 
 const Users = () => {
   const users = useSelector(selectUsers);
+  const dispatch = useDispatch();
+  const [newUser, setNewUser] = useState({})
+
+  const editUser = (username) => {
+    const currentUser = users.filter(user => user.username === username)[0];
+    document.getElementsByName("fname")[0].value = currentUser.fname;
+    document.getElementsByName("lname")[0].value = currentUser.lname;
+    document.getElementsByName("username")[0].value = currentUser.username;
+  }
+
+  const deleteUsers = (username) => {
+    dispatch(deleteUser(username));
+  }
 
   const submitForm = (event) => {
-    const newUser = {};
     event.preventDefault();
-    const formData = event.target.elements;
-    newUser.fname = formData[0].value;
-    newUser.lname = formData[1].value;
-    newUser.username = formData[2].value;
 
-    console.log(newUser);
+    document.getElementsByName("fname")[0].value = "";
+    document.getElementsByName("lname")[0].value = "";
+    document.getElementsByName("username")[0].value = "";
+
+    setNewUser({});
+    dispatch(addUser(newUser));
   }
+
   return (
-      <div>
+      <Container>
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -28,10 +42,14 @@ const Users = () => {
           </thead>
           <tbody>
             {users.map((user) =>
-              <tr>
+              <tr key={`user@${user.username}`}>
               <td>{user.fname}</td>
               <td>{user.lname}</td>
               <td>@{user.username}</td>
+              <td>
+                <span style={{cursor: "pointer"}} onClick={() => editUser(user.username)}>Edit</span>{" | "}
+                <span style={{cursor: "pointer"}} onClick={() => deleteUsers(user.username)}>Delete</span>
+              </td>
             </tr>
             )}
           </tbody>
@@ -41,18 +59,18 @@ const Users = () => {
         <Form onSubmit={submitForm}>
           <Row>
             <Col>
-              <Form.Control required placeholder="First name" name="fname" />
+              <Form.Control required placeholder="First name" name="fname" onChange={(event) => setNewUser({...newUser, fname: event.target.value})} />
             </Col>
             <Col>
-              <Form.Control required placeholder="Last name" name="lname" />
+              <Form.Control required placeholder="Last name" name="lname" onChange={(event) => setNewUser({...newUser, lname: event.target.value})} />
             </Col>
             <Col>
-              <Form.Control required placeholder="Username" name="username" />
+              <Form.Control required placeholder="Username" name="username" onChange={(event) => setNewUser({...newUser, username: event.target.value})} />
             </Col>
             <Col><Button variant="primary" type="submit">Add</Button></Col>
           </Row>
         </Form>
-    </div>
+    </Container>
   )
 }
 
