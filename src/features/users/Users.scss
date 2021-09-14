@@ -1,0 +1,16 @@
+$primary: #0d6efd;
+$danger: #ff0e0e;
+
+.users__actions {
+  display: flex;
+  justify-content: space-around;
+
+  span {
+    .fa-user-edit {
+      color: $primary;
+    }
+    .fa-trash-alt {
+      color: $danger;
+    }
+  }
+}

@@ -14,13 +14,29 @@ export const usersSlice = createSlice({
     addUser: (state, {payload}) => {
       state.users.push(payload);
     },
+    editCurrUser: (state, {payload}) => {
+      state.users.find((user, i) => {
+      if (user.username === payload.username) {
+        state.users[i] = payload;
+        return true;
+      }
+      return null;
+    });
+    },
     deleteUser: (state, {payload}) => {
       state.users = state.users.filter((user) =>  user.username !== payload);
     },
   },
 });
 
-export const { addUser, deleteUser } = usersSlice.actions;
+export const { addUser, deleteUser, editCurrUser } = usersSlice.actions;
+
+// export const editCurrUser = (amount) => (dispatch, getState) => {
+//   const currentUser = selectCount(getState());
+//   if (currentUser % 2 === 1) {
+//     dispatch(incrementByAmount(amount));
+//   }
+// };
 
 export const selectUsers = (state) => state.users.users;
 

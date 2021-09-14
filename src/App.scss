@@ -5,10 +5,9 @@
   border: 1px solid black;
   border-radius: 5px;
   min-height: 93vh;
-}
 
-.app h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-/*# sourceMappingURL=App.css.map */
+  h1 {
+    text-align: center;
+    margin-bottom: max(30px);
+  };
+};

@@ -1,0 +1,16 @@
+.users__actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.users__actions span .fa-user-edit {
+  color: #0d6efd;
+}
+
+.users__actions span .fa-trash-alt {
+  color: #ff0e0e;
+}
+/*# sourceMappingURL=Users.css.map */

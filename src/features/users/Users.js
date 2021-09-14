@@ -1,37 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addUser, deleteUser, selectUsers } from './usersSlice'
+import { addUser, deleteUser, editCurrUser, selectUsers } from './usersSlice'
+import './Users.css';
+import { faUserEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Users = () => {
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
-  const [newUser, setNewUser] = useState({})
+  const [newUser, setNewUser] = useState({});
+  const [add, setAdd] = useState(true)
+
+  useEffect(() => {}, [newUser])
 
   const editUser = (username) => {
     const currentUser = users.filter(user => user.username === username)[0];
-    document.getElementsByName("fname")[0].value = currentUser.fname;
-    document.getElementsByName("lname")[0].value = currentUser.lname;
-    document.getElementsByName("username")[0].value = currentUser.username;
+    setNewUser(currentUser);
+    setAdd(false);
   }
 
   const deleteUsers = (username) => {
     dispatch(deleteUser(username));
   }
 
-  const submitForm = (event) => {
+  const addNewUser = (event) => {
     event.preventDefault();
 
-    document.getElementsByName("fname")[0].value = "";
-    document.getElementsByName("lname")[0].value = "";
-    document.getElementsByName("username")[0].value = "";
-
+    if(users.find(user => user.username === newUser.username)) {
+      dispatch(editCurrUser(newUser));
+    } else {
+      dispatch(addUser(newUser));
+    }   
     setNewUser({});
-    dispatch(addUser(newUser));
+    setAdd(true);
   }
 
   return (
-      <Container>
+      <Container className="users">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -46,9 +52,14 @@ const Users = () => {
               <td>{user.fname}</td>
               <td>{user.lname}</td>
               <td>@{user.username}</td>
-              <td>
-                <span style={{cursor: "pointer"}} onClick={() => editUser(user.username)}>Edit</span>{" | "}
-                <span style={{cursor: "pointer"}} onClick={() => deleteUsers(user.username)}>Delete</span>
+              <td className="users__actions">
+                <span style={{cursor: "pointer"}} onClick={() => editUser(user.username)}>
+                  <FontAwesomeIcon icon={faUserEdit} />
+                </span>
+                <span style={{cursor: "pointer"}} onClick={() => deleteUsers(user.username)}>
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </span>
+                
               </td>
             </tr>
             )}
@@ -56,18 +67,42 @@ const Users = () => {
         </Table>
 
         <h3>+ Add user</h3>
-        <Form onSubmit={submitForm}>
+        <Form>
           <Row>
             <Col>
-              <Form.Control required placeholder="First name" name="fname" onChange={(event) => setNewUser({...newUser, fname: event.target.value})} />
+              <Form.Control 
+                required 
+                placeholder="First name" 
+                name="fname"
+                value={newUser.fname || ""}
+                onChange={(event) => setNewUser({...newUser, fname: event.target.value})} 
+              />
             </Col>
             <Col>
-              <Form.Control required placeholder="Last name" name="lname" onChange={(event) => setNewUser({...newUser, lname: event.target.value})} />
+              <Form.Control 
+                required 
+                placeholder="Last name" 
+                name="lname" 
+                value={newUser.lname || ""}
+                onChange={(event) => setNewUser({...newUser, lname: event.target.value})} 
+              />
             </Col>
             <Col>
-              <Form.Control required placeholder="Username" name="username" onChange={(event) => setNewUser({...newUser, username: event.target.value})} />
+              <Form.Control 
+                required 
+                placeholder="Username" 
+                name="username" 
+                value={newUser.username || ""}
+                onChange={(event) => setNewUser({...newUser, username: event.target.value})} 
+              />
             </Col>
-            <Col><Button variant="primary" type="submit">Add</Button></Col>
+            <Col>
+              {
+              add 
+                ? <Button onClick={addNewUser} variant="primary" type="submit">Add</Button> 
+                : <Button onClick={addNewUser} variant="primary" type="submit">Update</Button>
+              }
+            </Col>
           </Row>
         </Form>
     </Container>
