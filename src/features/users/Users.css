@@ -10,7 +10,44 @@
   color: #0d6efd;
 }
 
+.users__actions span .fa-user-edit:hover {
+  color: #0143a3;
+}
+
 .users__actions span .fa-trash-alt {
   color: #ff0e0e;
+}
+
+.users__actions span .fa-trash-alt:hover {
+  color: #a70000;
+}
+
+h3 {
+  text-align: center;
+}
+
+.users__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 800px) {
+  .users__row {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
+@media (max-width: 800px) {
+  .users__row input, .users__row button {
+    margin-bottom: 10px;
+  }
+}
+
+.users__row button {
+  width: 100%;
 }
 /*# sourceMappingURL=Users.css.map */

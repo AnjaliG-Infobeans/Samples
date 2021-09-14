@@ -68,7 +68,7 @@ const Users = () => {
 
         <h3>+ Add user</h3>
         <Form>
-          <Row>
+          <Row className="users__row">
             <Col>
               <Form.Control 
                 required 
@@ -97,11 +97,9 @@ const Users = () => {
               />
             </Col>
             <Col>
-              {
-              add 
-                ? <Button onClick={addNewUser} variant="primary" type="submit">Add</Button> 
-                : <Button onClick={addNewUser} variant="primary" type="submit">Update</Button>
-              }
+              <Button onClick={addNewUser} variant="primary" type="submit">
+                {add ? "Add": "Update"}
+              </Button> 
             </Col>
           </Row>
         </Form>

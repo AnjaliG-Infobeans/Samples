@@ -1,5 +1,21 @@
-$primary: #0d6efd;
-$danger: #ff0e0e;
+$colors: (
+  primary: #0d6efd,
+  primary-dark: darken(#0d6efd, 20%),
+  danger: #ff0e0e,
+  danger-dark: darken(#ff0e0e, 20%),
+);
+
+$mobile: 800px;
+
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}
 
 .users__actions {
   display: flex;
@@ -7,10 +23,37 @@ $danger: #ff0e0e;
 
   span {
     .fa-user-edit {
-      color: $primary;
+      color: color(primary);
+      &:hover {
+        color:color(primary-dark);
+      }
     }
     .fa-trash-alt {
-      color: $danger;
+      color: color(danger);
+      &:hover {
+        color:color(danger-dark);
+      }
     }
+  }
+}
+
+h3 {
+  text-align: center;
+}
+
+.users__row {
+  display: flex;
+
+  @include mobile {
+    flex-direction: column;
+  }
+
+  input, button {
+    @include mobile {
+      margin-bottom: 10px;
+    }
+  }
+  button {
+    width: 100%;
   }
 }
