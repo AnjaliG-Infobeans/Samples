@@ -4,8 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: path.join(__dirname, "src", "index.js"),
   output: {
-    path:path.resolve(__dirname, "dist"),
-  },
+     filename: 'bundle.js',
+     path: path.resolve(__dirname, 'dist'),
+   },
   mode: "production",
   performance: {
     hints: false,
@@ -28,22 +29,28 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
-      // {
-      //   test: /\.scss$/i,
-      //   use: {
-      //     loader: "css-loader!sass-loader",
-      //   }
-      // },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: require("sass"),
+            },
+          },
+        ],
+      },
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        use: ['file-loader?name=[name].[ext]'],
+        use: ["file-loader?name=[name].[ext]"],
       },
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
-      favicon: path.join(__dirname, "public", "favicon.ico"),
     }),
   ],
 }
